@@ -46,7 +46,12 @@ impl Rustc {
 
         let mut cmd = util::process(&path);
         cmd.arg("-vV");
-        let verbose_version = cache.cached_output(&cmd)?.0;
+        let output = cache.cached_output(&cmd)?;
+        let verbose_version = output.0;
+
+        if output.1 != "" {
+            println!("unexpected stderr output from rustc:\n{}", output.1);
+        }
 
         let host = {
             let triple = verbose_version

@@ -268,6 +268,9 @@ fn parse_crate_type(
     if not_supported {
         return Ok(None);
     }
+    if error != "" {
+        println!("unexpected stderr from rustc:\n{}", error);
+    }
     let line = match lines.next() {
         Some(line) => line,
         None => failure::bail!(
